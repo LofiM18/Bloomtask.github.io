@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BloomTask</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ===== TODAY VIEW ===== -->
+<div id="view-today" class="view active">
+  <div class="topbar">
+    <div class="logo pixel-font">bloom<span>task</span></div>
+    <div class="topbar-right">
+      <div class="streak-badge">
+        <span class="streak-flame">🔥</span>
+        <span id="streak-count">0</span> day streak
+      </div>
+      <div class="xp-wrap">
+        <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+        <div class="xp-label"><span id="xp-current">0</span> / 1000 XP</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="today-layout">
+    <!-- LEFT: Pot + Tasks -->
+    <div class="today-left">
+      <div>
+        <div class="today-title pixel-font" id="today-date-label">Today</div>
+        <div class="today-sub" id="today-task-summary">0 tasks done</div>
+      </div>
+
+      <!-- Today's pot -->
+      <div class="pot-card">
+        <div class="pot-card-label">Today's bloom pot</div>
+        <div class="pot-visual" id="flower-wrap">
+          <svg id="today-flower" class="flower-large" viewBox="0 0 100 120"></svg>
+        </div>
+        <div id="phase-badge" class="phase-badge phase-1">🌱 Seedling · Phase 1</div>
+        <div class="bloom-meter">
+          <div class="bloom-meter-track">
+            <div class="bloom-meter-fill" id="bloom-fill"></div>
+          </div>
+          <div class="bloom-meter-label">
+            <span id="bloom-pct">0</span>% bloomed · <span id="bloom-xp-total">0</span> XP rolled
+          </div>
+        </div>
+      </div>
+
+      <!-- Add task form -->
+      <div class="add-task-card">
+        <div class="add-task-title">Add a task</div>
+        <input type="text" id="task-name" placeholder="What do you need to do?" class="task-field"/>
+        <div class="task-row-inline">
+          <input type="text" id="task-duration" placeholder="How long? (e.g. 1 hour, 30 min)" class="task-field task-field-sm"/>
+          <input type="text" id="task-free-time" placeholder="Your free time (e.g. 9am–12pm)" class="task-field task-field-sm"/>
+        </div>
+        <div class="rng-hint">
+          🎲 Completing tasks rolls <strong>random XP</strong> (10–300) for your bloom meter.
+          Rarer rolls unlock higher plant phases!
+        </div>
+        <button class="btn-add" id="btn-add-task">+ Add Task</button>
+      </div>
+
+      <!-- Task list -->
+      <div class="task-list-wrap">
+        <div class="task-list-label">Today's tasks</div>
+        <div id="task-list" class="task-list"></div>
+        <div id="empty-state" class="empty-state">No tasks yet — add one above to start growing!</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Mini calendar view -->
+    <div class="today-right">
+      <div class="cal-card">
+        <div class="cal-title">Schedule</div>
+        <div class="cal-subtitle" id="cal-date-label">Today</div>
+        <div id="cal-slots" class="cal-slots"></div>
+        <div class="cal-legend">
+          <div class="leg-item"><span class="leg-dot leg-done"></span>Done</div>
+          <div class="leg-item"><span class="leg-dot leg-todo"></span>To do</div>
+          <div class="leg-item"><span class="leg-dot leg-break"></span>Break</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Bloom FAB -->
+  <button class="fab" id="btn-bloom">
+    <span class="fab-icon">🌸</span>
+    <span class="fab-label">My Bloom</span>
+  </button>
+</div>
+
+<!-- ===== MY BLOOM / GARDEN ROOM VIEW ===== -->
+<div id="view-bloom" class="view">
+  <div class="garden-view">
+
+    <div class="garden-topbar">
+      <div class="garden-topbar-left">
+        <button class="back-btn" id="back-btn">← Back</button>
+        <div class="garden-title pixel-font">My Bloom Garden</div>
+      </div>
+      <div class="garden-hint">Drag pots onto shelves, bookcase &amp; table</div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <!-- ROOM SCENE -->
+    <div class="room-scene" id="room-scene">
+      <!-- Background layers -->
+      <div class="room-wall-back"></div>
+      <div class="wallpaper-dots"></div>
+      <div class="room-floor-area"><div class="floor-boards"></div></div>
+      <div class="room-baseboard"></div>
+
+      <!-- Window center-top -->
+      <div class="room-window">
+        <div class="win-curtain-l"></div>
+        <div class="win-curtain-r"></div>
+        <div class="win-outer"></div>
+        <div class="win-inner">
+          <div class="win-pane"></div><div class="win-pane"></div>
+          <div class="win-pane"></div><div class="win-pane"></div>
+        </div>
+        <div class="win-sill"></div>
+      </div>
+
+      <!-- Rug on floor -->
+      <div class="room-rug"><div class="rug-inner"></div></div>
+
+      <!-- BOOKCASE left wall -->
+      <div class="furniture-piece bookcase">
+        <div class="bookcase-body">
+          <div class="bookcase-back"></div>
+          <div class="bookcase-shelf bookcase-shelf-1"></div>
+          <div class="bookcase-shelf bookcase-shelf-2"></div>
+          <!-- Decorative books row 0 (top) -->
+          <div class="bookcase-books" style="top:4px;">
+            <div class="book" style="background:#c06050;height:36px;"></div>
+            <div class="book" style="background:#5070c0;height:40px;"></div>
+            <div class="book" style="background:#508050;height:32px;"></div>
+            <div class="book" style="background:#c08030;height:38px;"></div>
+            <div class="book" style="background:#9050a0;height:35px;"></div>
+          </div>
+          <!-- Books row 1 -->
+          <div class="bookcase-books" style="top:54px;">
+            <div class="book" style="background:#40a080;height:38px;"></div>
+            <div class="book" style="background:#c05090;height:34px;"></div>
+            <div class="book" style="background:#8080c0;height:40px;"></div>
+            <div class="book" style="background:#d07040;height:36px;"></div>
+          </div>
+          <!-- Books row 2 -->
+          <div class="bookcase-books" style="top:104px;">
+            <div class="book" style="background:#6090d0;height:40px;"></div>
+            <div class="book" style="background:#b06060;height:36px;"></div>
+            <div class="book" style="background:#70a060;height:38px;"></div>
+          </div>
+        </div>
+        <div class="bookcase-leg bookcase-leg-l"></div>
+        <div class="bookcase-leg bookcase-leg-r"></div>
+        <!-- Plant slots on bookcase -->
+        <div class="plant-slot" id="slot-bc-top" data-label="Bookcase top" style="top:-50px;"></div>
+        <div class="plant-slot" id="slot-bc-s1"  data-label="Shelf 1"      style="top:2px;"></div>
+        <div class="plant-slot" id="slot-bc-s2"  data-label="Shelf 2"      style="top:52px;"></div>
+        <div class="plant-slot" id="slot-bc-s3"  data-label="Shelf 3"      style="top:102px;"></div>
+      </div>
+
+      <!-- WALL SHELVES right wall -->
+      <div class="furniture-piece wall-shelf wall-shelf-1">
+        <div class="shelf-plank"></div>
+        <div class="shelf-bracket shelf-bracket-l"></div>
+        <div class="shelf-bracket shelf-bracket-r"></div>
+        <div class="plant-slot" id="slot-ws1" data-label="Wall shelf 1" style="top:-54px;"></div>
+      </div>
+      <div class="furniture-piece wall-shelf wall-shelf-2">
+        <div class="shelf-plank"></div>
+        <div class="shelf-bracket shelf-bracket-l"></div>
+        <div class="shelf-bracket shelf-bracket-r"></div>
+        <div class="plant-slot" id="slot-ws2" data-label="Wall shelf 2" style="top:-54px;"></div>
+      </div>
+
+      <!-- SIDE TABLE right -->
+      <div class="furniture-piece side-table">
+        <div class="table-top">
+          <div class="table-leg table-leg-l"></div>
+          <div class="table-leg table-leg-r"></div>
+          <div class="table-shelf-mid"></div>
+        </div>
+        <div class="plant-slot" id="slot-table-top" data-label="Table top"   style="top:-54px;"></div>
+        <div class="plant-slot" id="slot-table-mid" data-label="Table shelf" style="top:0px;margin-top:20px;"></div>
+      </div>
+
+      <!-- FLOOR zone center -->
+      <div class="plant-slot floor-slot" id="slot-floor" data-label="Floor"></div>
+
+      <!-- WINDOWSILL -->
+      <div class="plant-slot windowsill-slot" id="slot-windowsill" data-label="Windowsill"></div>
+    </div>
+
+    <!-- UNPLACED TRAY -->
+    <div class="unplaced-tray">
+      <div class="tray-title">🪴 Unplaced pots — drag into the room</div>
+      <div class="tray-pots" id="tray-pots"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Evolution / Bloom popup -->
+<div class="xp-roll-toast" id="xp-toast"></div>
+<div class="bloom-overlay" id="bloom-overlay"></div>
+<div class="bloom-popup" id="bloom-popup">
+  <div class="bloom-popup-icon" id="popup-icon">🌸</div>
+  <div class="bloom-popup-title pixel-font" id="popup-title">Full Bloom!</div>
+  <div class="bloom-popup-sub" id="popup-sub">You completed all tasks today!</div>
+  <button class="popup-ok" id="popup-ok">Awesome!</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
